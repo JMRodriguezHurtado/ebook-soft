@@ -4,8 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm'; // Import TypeOrmModule
-import { User } from './user/entities/user.entity'; // Import User entity
+import { TypeOrmModule } from '@nestjs/typeorm'; 
+import { User } from './user/entities/user.entity'; 
 
 const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
 
@@ -22,7 +22,7 @@ const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
       entities: [User], 
       synchronize: true, 
     }),
-    UserModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

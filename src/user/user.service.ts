@@ -14,7 +14,9 @@ export class UserService {
   ) {}
 
   async create(createUserInput: CreateUserInput): Promise<User> {
+    console.log("ahora si entre hasta el create")
     const newUser = this.userRepository.create(createUserInput);
+    console.log("este wey?", newUser)
     return await this.userRepository.save(newUser);
   }
 
