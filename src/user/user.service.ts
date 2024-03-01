@@ -14,22 +14,20 @@ export class UserService {
   ) {}
 
   async create(createUserInput: CreateUserInput): Promise<User> {
-    console.log("ahora si entre hasta el create")
     const newUser = this.userRepository.create(createUserInput);
-    console.log("este wey?", newUser)
     return await this.userRepository.save(newUser);
   }
 
   findAll(): Promise<User[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({ where: {deleted: false} });
   }
 
   findOneById(id: number): Promise<User | undefined> {
-    return this.userRepository.findOneById(id);
+    return this.userRepository.findOneBy({ id });
   }
 
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User | undefined> {
-    const userToUpdate = await this.userRepository.findOneById(id);
+    const userToUpdate = await this.userRepository.findOneBy({ id });
     if (!userToUpdate) {
       return undefined; 
     }
@@ -37,12 +35,25 @@ export class UserService {
     return this.userRepository.save(userToUpdate);
   }
 
-  async remove(id: number): Promise<boolean> {
-    const userToRemove = await this.userRepository.findOneById(id);
+  async softDelete(id: number): Promise<string> {
+    const userToRemove = await this.userRepository.findOneBy({ id });
     if (!userToRemove) {
-      return false;
-    }
-    await this.userRepository.remove(userToRemove);
-    return true;
+      return `No hay tal  usuario con el ID ${id}`;
+    } 
+    userToRemove.softDelete()
+    await this.userRepository.save(userToRemove);
+    return `Usuario ${id} fue removido correctamente`;
   }
+
+  async recover(id: number): Promise<User | string> {
+    const userToRecover = await this.userRepository.findOneBy({ id });
+
+    if (!userToRecover) {
+      return `Seguro que el usuario con el ID "${id}" existe?`;
+    }
+    userToRecover.recover();
+    await this.userRepository.save(userToRecover)
+    return userToRecover;
+  }
+
 }

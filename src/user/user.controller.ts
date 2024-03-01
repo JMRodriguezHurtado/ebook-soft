@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { UserService } from './user.service'; 
 import { CreateUserInput } from './dto/create-user.input';
 import  { UpdateUserInput } from './dto/update-user.input' ;
@@ -37,13 +37,20 @@ throw new NotFoundException(`User With ID="${id}" Could not be found`)
 return updatedUser;
 }
 
-@Delete(':id')
-async remove(@Param('id') id: number) {
-    const deletedUser = await this.userService.remove(id);
-    
+@Put('/remove/:id')
+async softDelete(@Param('id') id: number) {
+    const deletedUser = await this.userService.softDelete(id);  
     if(!deletedUser) { 
         throw new NotFoundException(`User With ID="${id}" could not be found`)
     }
     return deletedUser;
+}
+@Put('restore/:id')
+async restoreUser (@Param('id') id: number) { 
+    const restoredUser = await this.userService.recover(id);
+    if(!restoredUser) {
+      throw new InternalServerErrorException("Internal Error");
+    }
+    return restoredUser;
 }
 }

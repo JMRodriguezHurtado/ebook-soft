@@ -29,7 +29,11 @@ export class UserResolver {
   }
 
   @Mutation('removeUser')
-  remove(@Args('id') id: number) {
-    return this.userService.remove(id);
+  softDelete(@Args('id') id: number) {
+    return this.userService.softDelete(id);
+  }
+  @Mutation('recoverUser')
+  recover(@Args('id') id: number) {
+    return this.userService.recover(id)
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BeforeRemove } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity('user')
@@ -28,31 +28,27 @@ export class User {
   email: string;
 
   @Column({
-    type: 'timestamp',
+    type: 'boolean',
     nullable: true,
     default: null
   })
-  deletedAt: Date;
+  deleted: boolean;
 
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @BeforeUpdate()
-  async rehashPassword() {
-    if (this.password) {
-      this.password = await bcrypt.hash(this.password, 10);
-    }
-  }
+  @BeforeInsert()
+  async setDeleted () {
+    this.deleted = false}
 
-  @BeforeRemove()
   async softDelete() {
-    this.deletedAt = new Date();
+    this.deleted = true;
   }
 
   async recover() {
-    this.deletedAt = null;
+    this.deleted = false;
     return this;
   }
 
