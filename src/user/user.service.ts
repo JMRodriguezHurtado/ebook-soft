@@ -23,7 +23,9 @@ export class UserService {
   }
 
   findOneById(id: number): Promise<User | undefined> {
-    return this.userRepository.findOneBy({ id });
+    const found = this.userRepository.findOneBy({ id });
+    if  (!found) {return undefined}
+    return found;
   }
 
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User | undefined> {
@@ -36,7 +38,7 @@ export class UserService {
   }
 
   async softDelete(id: number): Promise<string> {
-    const userToRemove = await this.userRepository.findOneBy({ id });
+    const userToRemove = await this.userRepository.findOneBy({ id , deleted: false});
     if (!userToRemove) {
       return `No hay tal  usuario con el ID ${id}`;
     } 
@@ -46,7 +48,7 @@ export class UserService {
   }
 
   async recover(id: number): Promise<User | string> {
-    const userToRecover = await this.userRepository.findOneBy({ id });
+    const userToRecover = await this.userRepository.findOneBy({ id, deleted: true});
 
     if (!userToRecover) {
       return `Seguro que el usuario con el ID "${id}" existe?`;

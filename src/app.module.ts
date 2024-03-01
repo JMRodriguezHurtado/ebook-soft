@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm'; 
 import { User } from './user/entities/user.entity'; 
+import { Book } from './books/entities/book.entity';
+import { BooksModule } from './books/books.module';
 
 const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
 
@@ -19,10 +21,11 @@ const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User], 
+      entities: [User, Book],
       synchronize: true, 
     }),
-    UserModule
+    UserModule,
+    BooksModule
   ],
   controllers: [AppController],
   providers: [AppService],
