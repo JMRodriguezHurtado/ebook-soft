@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -13,6 +14,7 @@ const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
 
 @Module({
   imports: [
+    MulterModule.register({ dest: './uploads'}),
     ConfigModule.forRoot(configModuleOptions),
     TypeOrmModule.forRoot({
       type: 'mysql',
