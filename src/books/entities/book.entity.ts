@@ -26,10 +26,10 @@ export class Book{
   sinopsis: string;
 
   @Column({
-    type: 'blob',
+    type: 'varchar',
     nullable: false,
   })
-  book: Buffer;
+  bookUrl: string;
 
   @Column({
     type: 'boolean',
@@ -50,6 +50,4 @@ export class Book{
     this.deleted = false;
     return this;
   }
-
-} 
-
+}

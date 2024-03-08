@@ -13,4 +13,8 @@ export class CreateBookDto {
     @IsNotEmpty()
     @IsString()
     sinopsis: string;
+
+    @IsNotEmpty()
+    @IsString()
+    bookUrl: string    
 }
