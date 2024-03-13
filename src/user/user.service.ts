@@ -23,13 +23,13 @@ export class UserService {
   }
 
   findOneById(id: number): Promise<User | undefined> {
-    const found = this.userRepository.findOneBy({ id });
+    const found = this.userRepository.findOneBy({ id, deleted: false });
     if  (!found) {return undefined}
     return found;
   }
 
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User | undefined> {
-    const userToUpdate = await this.userRepository.findOneBy({ id });
+    const userToUpdate = await this.userRepository.findOneBy({ id, deleted: false });
     if (!userToUpdate) {
       return undefined; 
     }
