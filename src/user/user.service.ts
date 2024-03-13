@@ -19,7 +19,7 @@ export class UserService {
   }
 
   findAll(): Promise<User[]> {
-    return this.userRepository.find({ where: {deleted: false} });
+    return this.userRepository.find({where: {deleted: false}});
   }
 
   findOneById(id: number): Promise<User | undefined> {
