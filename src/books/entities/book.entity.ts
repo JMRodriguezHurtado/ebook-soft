@@ -32,6 +32,12 @@ export class Book{
   bookUrl: string;
 
   @Column({
+    type: 'varchar',
+    nullable: false,
+  })
+  price: number;
+
+  @Column({
     type: 'boolean',
     nullable: true,
     default: null
