@@ -21,7 +21,7 @@ export class BooksService {
     return this.bookRepository.find({ where: {deleted: false} });
   }
 
-  findOneById(id: number): Promise<Book | undefined> {
+  findOneById(id: string): Promise<Book | undefined> {
     const  found = this.bookRepository.findOneBy({ id });
     if (!found) { 
       return undefined
@@ -29,14 +29,14 @@ export class BooksService {
     return  found;
   }
 
-  async update(id: number, updateBookDto: UpdateBookDto): Promise<Book | undefined> {
+  async update(id: string, updateBookDto: UpdateBookDto): Promise<Book | undefined> {
     const  bookToUpdate = await this.findOneById(id);
     if(!bookToUpdate) { return undefined }
     Object.assign(bookToUpdate, updateBookDto);
     return await this.bookRepository.save(bookToUpdate);
   }
 
-  async softDelete(id: number): Promise<string> {
+  async softDelete(id: string): Promise<string> {
     const bookToRemove = await this.bookRepository.findOneBy({ id , deleted :false});
     if(!bookToRemove){ return 'El libro ya ha sido borrado' };
     bookToRemove.softDelete()
@@ -44,7 +44,7 @@ export class BooksService {
     return "Libro eliminado correctamente";
   }
 
-  async recover(id:number):Promise<Book | string>{
+  async recover(id:string):Promise<Book | string>{
     const bookToRecover=await this.bookRepository.findOneBy({id, deleted: true});
     if (!bookToRecover) {return 'No se encontró el libro para recuperar'}
     bookToRecover.recover();
