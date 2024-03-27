@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BooksModule } from './books/books.module';
 import { User } from './user/entities/user.entity';
 import { Book } from './books/entities/book.entity';
+import { LoginModule } from './login/login.module';
 
 const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
 
@@ -25,7 +26,8 @@ const configModuleOptions: ConfigModuleOptions = { envFilePath: '.env' };
     entities: [User, Book],
     synchronize: true, }),
     UserModule,
-    BooksModule
+    BooksModule,
+    LoginModule
   ],
   controllers: [AppController],
   providers: [AppService],
